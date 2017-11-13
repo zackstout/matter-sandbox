@@ -1,0 +1,17 @@
+{
+  "name": "matter-sandbox",
+  "version": "1.0.0",
+  "description": "",
+  "main": "box.js",
+  "dependencies": {
+    "matter-js": "^0.13.0",
+    "p5": "^0.5.16"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
