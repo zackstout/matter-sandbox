@@ -6,6 +6,7 @@ var engine;
 
 var world;
 var box2;
+var cannonball;
 var groundOpts = {
   isStatic: true,
   restitution: 1,
@@ -15,6 +16,7 @@ var groundOpts = {
 
 var boxes = [];
 var circles = [];
+var cannonballs = [];
 var box1 = Bodies.rectangle(200, 100, 20, 20);
 var ground = Bodies.rectangle(100, 250, 250, 20, groundOpts);
 var ground2 = Bodies.rectangle(200, 150, 250, 20, groundOpts);
@@ -32,9 +34,18 @@ function setup() {
 }
 var x = 0;
 
-function keyReleased() {
-  Matter.Body.setAngle(cannon, x);
-  console.log(cannon);
+// function keyReleased() {
+//   Matter.Body.setAngle(cannon, x);
+//   console.log(cannon);
+// }
+
+function mousePressed() {
+  console.log('u pressin it dog');
+  cannonball = Bodies.circle(cannon.position.x + 20, cannon.position.y + 20, 15, {restitution: 1, friction: 0});
+  World.add(world, cannonball);
+  Matter.Body.setVelocity(cannonball, {x: 10, y: -10});
+
+  cannonballs.push(cannonball);
 }
 
 function draw() {
@@ -51,8 +62,13 @@ function draw() {
   for (var j = 0; j < circles.length; j++) {
     ellipse(circles[j].position.x, circles[j].position.y, circles[j].size);
   }
+  for (var k = 0; k < cannonballs.length; k++) {
+    ellipse(cannonballs[k].position.x, cannonballs[k].position.y, 15);
+  }
+
   rect(box1.position.x,box1.position.y, 20, 20);
 
+//this is how we get around the angle rotation issue:
 translate(cannon.position.x, cannon.position.y);
   rotate(cannon.angle);
   rectMode(CENTER);
@@ -92,6 +108,16 @@ function mouseClicked() {
   // Matter.Body.setAngularVelocity( box1, Math.PI/6);
 
 }
+
+// Working:
+// Matter.Body.translate(box1, {x:10, y:0});
+// Matter.Body.setVelocity( box1, {x: 10, y: -10});
+// Matter.Body.setAngularVelocity( box1, Math.PI/6);
+// Matter.Body.applyForce(box1, {x: box1.position.x, y: box1.position.y}, {x: 0.02, y: -0.05});
+
+
+
+
 
 
 //get angle working
