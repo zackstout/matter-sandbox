@@ -18,6 +18,7 @@ var boxes = [];
 var circles = [];
 var cannonballs = [];
 var box1 = Bodies.rectangle(200, 100, 20, 20);
+var omega = Bodies.circle(500, 500, 100, {isStatic: true});
 var ground = Bodies.rectangle(100, 250, 250, 20, groundOpts);
 var ground2 = Bodies.rectangle(200, 150, 250, 20, groundOpts);
 var cannon = Bodies.rectangle(100, 400, 40, 15, {isStatic: true});
@@ -26,7 +27,7 @@ function setup() {
   createCanvas(1000,1000);
   engine = Engine.create();
   world = engine.world;
-  World.add(world, [box1, ground, ground2, cannon]);
+  World.add(world, [box1, ground, ground2, cannon, omega]);
   Engine.run(engine);
 }
 var x = 0;
@@ -47,10 +48,10 @@ var x = 0;
 // Matter.World.add(world, mouseConstraint);
 
 function mousePressed() {
-  console.log('u pressin it dog');
+  console.log('u pressin it dog', mouseX, mouseY);
   // cannonball = Bodies.circle(cannon.position.x + 20, cannon.position.y + 20, 15, {restitution: 1, friction: 0});
-    cannonball = Bodies.circle(cannon.position.x - 3, cannon.position.y - 80, 15, {restitution: 1, friction: 0});
-    cannonball2 = Bodies.circle(cannon.position.x - 3, cannon.position.y - 60, 15, {restitution: 1, friction: 0});
+    cannonball = Bodies.circle(cannon.position.x, cannon.position.y - 80, 7.5, {restitution: 1, friction: 0});
+    cannonball2 = Bodies.circle(cannon.position.x, cannon.position.y - 60, 7.5, {restitution: 1, friction: 0});
   World.add(world, [cannonball, cannonball2]);
   //wait we can't just hard code a velocity...needs to depend on angle:
   // Matter.Body.setVelocity(cannonball, {x: 10, y: -15});
@@ -67,7 +68,7 @@ function mousePressed() {
 
   cannonballs.push(cannonball);
   cannonballs.push(cannonball2);
-}
+} //end MOUSEPRESSED
 
 function draw() {
   background(251);
@@ -88,6 +89,7 @@ function draw() {
   }
 
   rect(box1.position.x,box1.position.y, 20, 20);
+  ellipse(omega.position.x, omega.position.y, 200);
 
 //this is how we get around the angle rotation issue, jeez it sure is cumbersome:
 translate(cannon.position.x, cannon.position.y);
@@ -111,8 +113,11 @@ translate(cannon.position.x, cannon.position.y);
   rotate(-ground2.angle);
   translate(-ground2.position.x, -ground2.position.y);
 
+  //ok so we can *draw* curved lines at least...
+//   stroke(100);
+// curve(1000, 500, 500, 450, 100, 200, 50, -200);
 
-}
+} //end DRAW
 
 function mouseDragged() {
   // box2 = Bodies.rectangle(mouseX, mouseY, 20, 20, {restitution: 1, friction: 0});
@@ -143,23 +148,3 @@ function mouseClicked() {
 // Matter.Body.setVelocity( box1, {x: 10, y: -10});
 // Matter.Body.setAngularVelocity( box1, Math.PI/6);
 // Matter.Body.applyForce(box1, {x: box1.position.x, y: box1.position.y}, {x: 0.02, y: -0.05});
-
-
-
-// NOTES:
-//maybe SHIFT (or whatever) rotates all the platforms haha
-//want to make mousedown the angle changer and mouseup the throw?
-//or mousedown the force changer and mouseup the throw?
-//get angular stitched together with matter and p5 to make the holy trinity
-//get angle working
-//forget about them once off screen
-//power up force with mouse pressdown
-//or maybe change angle like that, and power up with a slider?
-//how would you do the flipper? like a somewhat static body?
-//animate a cannon that illustrates your angle
-//animate moving obstacles
-//animate static obstacles (done pretty much)
-//can we overlay a parabolic path? or make a tangent flash when hitting a curved obstacle?
-//make some surfaces be "extra" bouncy and impart force, like portal 2
-//just making 2d portal would be fucking dope ....just do that??
-//how to make a parabolic wall?
