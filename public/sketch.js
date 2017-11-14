@@ -11,7 +11,7 @@ var groundOpts = {
   isStatic: true,
   restitution: 1,
   friction: 0,
-  // angle: 0.2
+  angle: 0.2
 };
 
 var boxes = [];
@@ -27,9 +27,6 @@ function setup() {
   engine = Engine.create();
   world = engine.world;
   World.add(world, [box1, ground, ground2, cannon]);
-  // World.add(world, ground);
-  // World.add(world, ground2);
-
   Engine.run(engine);
 }
 var x = 0;
@@ -39,13 +36,37 @@ var x = 0;
 //   console.log(cannon);
 // }
 
+//this must only work without p5:
+// var mouseConstraint = Matter.MouseConstraint.create(engine, { //Create Constraint
+//   element: document.getElementById('world'),
+//   constraint: {
+//
+//     stiffness:0.8
+//   }
+// });
+// Matter.World.add(world, mouseConstraint);
+
 function mousePressed() {
   console.log('u pressin it dog');
-  cannonball = Bodies.circle(cannon.position.x + 20, cannon.position.y + 20, 15, {restitution: 1, friction: 0});
-  World.add(world, cannonball);
-  Matter.Body.setVelocity(cannonball, {x: 10, y: -10});
+  // cannonball = Bodies.circle(cannon.position.x + 20, cannon.position.y + 20, 15, {restitution: 1, friction: 0});
+    cannonball = Bodies.circle(cannon.position.x - 3, cannon.position.y - 80, 15, {restitution: 1, friction: 0});
+    cannonball2 = Bodies.circle(cannon.position.x - 3, cannon.position.y - 60, 15, {restitution: 1, friction: 0});
+  World.add(world, [cannonball, cannonball2]);
+  //wait we can't just hard code a velocity...needs to depend on angle:
+  // Matter.Body.setVelocity(cannonball, {x: 10, y: -15});
+
+    // Matter.Body.setVelocity(cannonball, {x: 10*cos(cannon.angle), y: -10*sin(cannon.angle)});
+
+    var constraint = Matter.Constraint.create({
+      bodyA: cannonball,
+      bodyB: cannonball2,
+      length: 20,
+      stiffness: 0.4
+    });
+    World.add(world, constraint);
 
   cannonballs.push(cannonball);
+  cannonballs.push(cannonball2);
 }
 
 function draw() {
@@ -68,7 +89,7 @@ function draw() {
 
   rect(box1.position.x,box1.position.y, 20, 20);
 
-//this is how we get around the angle rotation issue:
+//this is how we get around the angle rotation issue, jeez it sure is cumbersome:
 translate(cannon.position.x, cannon.position.y);
   rotate(cannon.angle);
   rectMode(CENTER);
@@ -76,12 +97,20 @@ translate(cannon.position.x, cannon.position.y);
   rotate(-cannon.angle);
   translate(-cannon.position.x, -cannon.position.y);
 
-  // rotate(ground.angle);
+  translate(ground.position.x, ground.position.y);
+  rotate(ground.angle);
   rectMode(CENTER);
-  rect(ground.position.x, ground.position.y, 250, 20);
-  // rotate(ground2.angle);
+  rect(0,0, 250, 20);
+  rotate(-ground.angle);
+  translate(-ground.position.x, -ground.position.y);
+
+  translate(ground2.position.x, ground2.position.y);
+  rotate(ground2.angle);
   rectMode(CENTER);
-  rect(ground2.position.x, ground2.position.y, 250, 20);
+  rect(0,0, 250, 20);
+  rotate(-ground2.angle);
+  translate(-ground2.position.x, -ground2.position.y);
+
 
 }
 
@@ -117,9 +146,11 @@ function mouseClicked() {
 
 
 
-
-
-
+// NOTES:
+//maybe SHIFT (or whatever) rotates all the platforms haha
+//want to make mousedown the angle changer and mouseup the throw?
+//or mousedown the force changer and mouseup the throw?
+//get angular stitched together with matter and p5 to make the holy trinity
 //get angle working
 //forget about them once off screen
 //power up force with mouse pressdown
