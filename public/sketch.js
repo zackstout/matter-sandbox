@@ -21,7 +21,7 @@ var box1 = Bodies.rectangle(200, 100, 20, 20);
 var omega = Bodies.circle(500, 500, 100, {isStatic: true});
 var ground = Bodies.rectangle(100, 250, 250, 20, groundOpts);
 var ground2 = Bodies.rectangle(200, 150, 250, 20, groundOpts);
-var cannon = Bodies.rectangle(100, 400, 40, 15, {isStatic: true});
+var cannon = Bodies.rectangle(100, 400, 40, 15, {isStatic: true, restitution: 1});
 
 function setup() {
   createCanvas(1000,1000);
@@ -30,6 +30,7 @@ function setup() {
   World.add(world, [box1, ground, ground2, cannon, omega]);
   Engine.run(engine);
 }
+
 var x = 0;
 
 // function keyReleased() {
@@ -55,6 +56,8 @@ function mousePressed() {
   World.add(world, [cannonball, cannonball2]);
   //wait we can't just hard code a velocity...needs to depend on angle:
   // Matter.Body.setVelocity(cannonball, {x: 10, y: -15});
+  Matter.Body.setVelocity(cannonball, {x: 0, y: 20});
+
 
     // Matter.Body.setVelocity(cannonball, {x: 10*cos(cannon.angle), y: -10*sin(cannon.angle)});
 

@@ -4,8 +4,8 @@
 [ ] figure out curved walls (just dropping them into a parabolic bowl would illustrate the tangent thing)
 [ ] implement force-alteration on cannonball/monkey
 [ ] make bouncing off some surfaces impart force
-[ ] forget about objects once off-canvas
-[ ] integrate angular and angular-material for the holy trinity: though it's pretty awesome how the mad fps simulates data binding for you
+[ ] forget about objects once off-canvas  *********
+[ ] integrate angular and angular-material for the holy trinity: though it's pretty awesome how the mad fps simulates data binding for you ****
 [ ] animate moving obstacles
 [ ] overlay educational parabolic path
 [ ] finesse constraints to make the cannonball into a flying monkey (Priority: Ultimate (funny ambiguity))
