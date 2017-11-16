@@ -50,27 +50,33 @@ var x = 0;
 
 function mousePressed() {
   console.log('u pressin it dog', mouseX, mouseY);
-  // cannonball = Bodies.circle(cannon.position.x + 20, cannon.position.y + 20, 15, {restitution: 1, friction: 0});
-    cannonball = Bodies.circle(cannon.position.x, cannon.position.y - 80, 7.5, {restitution: 1, friction: 0});
-    cannonball2 = Bodies.circle(cannon.position.x, cannon.position.y - 60, 7.5, {restitution: 1, friction: 0});
-  World.add(world, [cannonball, cannonball2]);
-  //wait we can't just hard code a velocity...needs to depend on angle:
-  // Matter.Body.setVelocity(cannonball, {x: 10, y: -15});
-  Matter.Body.setVelocity(cannonball, {x: 0, y: 20});
+  //this shows cannonball in action:
+  cannonball = Bodies.circle(cannon.position.x + 40*cos(cannon.angle), cannon.position.y + 40*sin(cannon.angle), 15, {restitution: 1, friction: 0});
+  //these show Constraints at work:
+    // cannonball = Bodies.circle(cannon.position.x, cannon.position.y - 80, 7.5, {restitution: 1, friction: 0});
+    // cannonball2 = Bodies.circle(cannon.position.x, cannon.position.y - 60, 7.5, {restitution: 1, friction: 0});
+  // World.add(world, [cannonball, cannonball2]);
+  World.add(world, cannonball);
 
+  //wait we can't just hard code a velocity...needs to depend on angle:
+  // Matter.Body.setVelocity(cannonball, {x: 10*cos(cannon.angle), y: -10*sin(cannon.angle)});
+  Matter.Body.applyForce(cannonball, {x: cannon.position.x, y: cannon.position.y}, {x: 0.02*cos(cannon.angle), y: 0.02*sin(cannon.angle)});
+  console.log(cannon.angle);
+  //for the Constrained balls:
+  // Matter.Body.setVelocity(cannonball, {x: 0, y: 20});
 
     // Matter.Body.setVelocity(cannonball, {x: 10*cos(cannon.angle), y: -10*sin(cannon.angle)});
 
-    var constraint = Matter.Constraint.create({
-      bodyA: cannonball,
-      bodyB: cannonball2,
-      length: 20,
-      stiffness: 0.4
-    });
-    World.add(world, constraint);
+    // var constraint = Matter.Constraint.create({
+    //   bodyA: cannonball,
+    //   bodyB: cannonball2,
+    //   length: 20,
+    //   stiffness: 0.4
+    // });
+    // World.add(world, constraint);
 
   cannonballs.push(cannonball);
-  cannonballs.push(cannonball2);
+  // cannonballs.push(cannonball2);
 } //end MOUSEPRESSED
 
 function draw() {
@@ -81,9 +87,9 @@ function draw() {
 
   }
   // console.log(x);
-  for (var i = 0; i < boxes.length; i++) {
-      rect(boxes[i].position.x, boxes[i].position.y, 20, 20);
-  }
+  // for (var i = 0; i < boxes.length; i++) {
+  //     rect(boxes[i].position.x, boxes[i].position.y, 20, 20);
+  // }
   for (var j = 0; j < circles.length; j++) {
     ellipse(circles[j].position.x, circles[j].position.y, circles[j].size);
   }
@@ -120,6 +126,7 @@ translate(cannon.position.x, cannon.position.y);
 //   stroke(100);
 // curve(1000, 500, 500, 450, 100, 200, 50, -200);
 
+
 } //end DRAW
 
 function mouseDragged() {
@@ -136,7 +143,9 @@ function mouseDragged() {
 
 function mouseClicked() {
   //this now works as well! ahahaa!!!
-  Matter.Body.applyForce(box1, {x: box1.position.x, y: box1.position.y}, {x: 0.02, y: -0.05});
+  // Matter.Body.applyForce(box1, {x: box1.position.x, y: box1.position.y}, {x: 0.02, y: -0.05});
+  Matter.Body.applyForce(box1, {x: box1.position.x, y: box1.position.y}, {x: 0.01, y: -0.03});
+
   // this works:
   // Matter.Body.translate(box1, {x:10, y:0});
   //and so does this!!!:
