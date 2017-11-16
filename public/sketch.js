@@ -8,9 +8,18 @@
 //-playing with constraints
 //-playing with mouse manipulation
 //-look into curved walls
-//
+//just search through document for '!'s to find ideas lol
+//be able to choose your skin: ocean, space -- you could change obstacles, or gravity!
+//make STICKIES: if ball touches them they stick to it
+//different consistencies of the background liquid
+//golf at the trump tower
+//could do a slingshot
+
+//what was my issue to .toFixed? why is the multiplying and dividing thing better?
+
 
 var x = 0;
+var z = 0;
 var Engine = Matter.Engine;
 var World = Matter.World;
 var Bodies = Matter.Bodies;
@@ -36,7 +45,7 @@ var cannonballs = [];
 var box1 = Bodies.rectangle(200, 100, 20, 20);
 var omega = Bodies.circle(500, 500, 100, {isStatic: true});
 var ground = Bodies.rectangle(100, 250, 250, 20, groundOpts);
-var ground2 = Bodies.rectangle(200, 150, 250, 20);
+var ground2 = Bodies.rectangle(300, 150, 250, 20, {isStatic: true});
 var cannon = Bodies.rectangle(100, 400, 40, 15, {isStatic: true, restitution: 1});
 
 //oooooooh you could do something dope like on deleting a body, make it just fall from the world!!
@@ -48,9 +57,15 @@ function setup() {
 
   world = engine.world;
 
+  // Matter.Body.applyForce( ground2, {x: ground2.position.x + 50, y: ground2.position.y}, {x: 0, y: 0.02});
+
+
+
 //ok nice, there is a super smooth way to disable gravity:
 //omg you could like hit a bucket and then it would swap gravity dog!
-  // world.gravity.y = -1;
+//you could also probably cheat the engine into simulating gravitational pull by planets like this..?
+//is low gravity just like slow time?
+  // world.gravity.y = -0.5;
   World.add(world, [box1, ground, ground2, cannon, omega]);
   Engine.run(engine);
 
@@ -98,7 +113,10 @@ function mousePressed() {
   //wait we can't just hard code a velocity...needs to depend on angle:
   // Matter.Body.setVelocity(cannonball, {x: 10*cos(cannon.angle), y: -10*sin(cannon.angle)});
   Matter.Body.applyForce(cannonball, {x: cannon.position.x, y: cannon.position.y}, {x: 0.04*cos(cannon.angle), y: 0.04*sin(cannon.angle)});
-  console.log(canvas.elt);
+  // console.log(canvas.elt);
+  //ahhhhhhh it would be super dope if we made the cannon recoil a bit every time it was fired!
+
+
   //for the Constrained balls:
   // Matter.Body.setVelocity(cannonball, {x: 0, y: 20});
   // Matter.Body.setVelocity(cannonball, {x: 10*cos(cannon.angle), y: -10*sin(cannon.angle)});
@@ -128,7 +146,12 @@ function draw() {
     stroke(0,0,0);
   }
 
-
+//SPINNER!
+  Matter.Body.setAngle(ground2, z);
+function rotateG2() {
+  z += 0.04;
+}
+rotateG2();
 
   background(251);
   if (keyIsDown(SHIFT)) {
@@ -201,7 +224,6 @@ function draw() {
 // }
 
 function mouseClicked() {
-  //this now works as well! ahahaa!!!
   // Matter.Body.applyForce(box1, {x: box1.position.x, y: box1.position.y}, {x: 0.02, y: -0.05});
   // Matter.Body.applyForce(box1, {x: box1.position.x, y: box1.position.y}, {x: 0.01, y: -0.01});
 
