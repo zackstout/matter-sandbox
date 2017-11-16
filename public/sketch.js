@@ -1,4 +1,16 @@
 
+//NEXT TO TRY:
+//-spinners --- wait could we just set angularVelocity..?! and prob airFriction to zero?
+//-flyers
+//-zones of gravity
+//-uh, portals
+//-oscillating radius, or oscillating flyers
+//-playing with constraints
+//-playing with mouse manipulation
+//-look into curved walls
+//
+
+var x = 0;
 var Engine = Matter.Engine;
 var World = Matter.World;
 var Bodies = Matter.Bodies;
@@ -34,13 +46,11 @@ function setup() {
   //wow, super weird, this seems to make the cannonballs have less force....which is odd:
   // engine.timing.timeScale = 0.5;
 
-//failed attempt to disable gravity:
-  // Matter.Body.applyForce(ground2, {x: ground2.position.x, y: ground2.position.y}, {x: 0, y: -0.2});
-
   world = engine.world;
 
 //ok nice, there is a super smooth way to disable gravity:
-  world.gravity.y = 0;
+//omg you could like hit a bucket and then it would swap gravity dog!
+  // world.gravity.y = -1;
   World.add(world, [box1, ground, ground2, cannon, omega]);
   Engine.run(engine);
 
@@ -54,15 +64,7 @@ function setup() {
   World.add(world, mConstraint);
 
 
-
-
-
-}
-
-var x = 0;
-
-
-
+} //end SETUP
 
 
 // function keyReleased() {
@@ -70,7 +72,7 @@ var x = 0;
 //   console.log(cannon);
 // }
 
-//this must only work without p5:
+//this must only work without p5??:
 // var mouseConstraint = Matter.MouseConstraint.create(engine, { //Create Constraint
 //   element: document.getElementById('world'),
 //   constraint: {
@@ -80,10 +82,13 @@ var x = 0;
 // });
 // Matter.World.add(world, mouseConstraint);
 
+
+//difference from mouseClicked?
 function mousePressed() {
   console.log('u pressin it dog', mouseX, mouseY);
   //this shows cannonball in action:
   cannonball = Bodies.circle(cannon.position.x + 40*cos(cannon.angle), cannon.position.y + 40*sin(cannon.angle), 15, {restitution: 1, friction: 0});
+
   //these show Constraints at work:
   // cannonball = Bodies.circle(cannon.position.x, cannon.position.y - 80, 7.5, {restitution: 1, friction: 0});
   // cannonball2 = Bodies.circle(cannon.position.x, cannon.position.y - 60, 7.5, {restitution: 1, friction: 0});
@@ -96,7 +101,6 @@ function mousePressed() {
   console.log(canvas.elt);
   //for the Constrained balls:
   // Matter.Body.setVelocity(cannonball, {x: 0, y: 20});
-
   // Matter.Body.setVelocity(cannonball, {x: 10*cos(cannon.angle), y: -10*sin(cannon.angle)});
 
   // var constraint = Matter.Constraint.create({
@@ -106,9 +110,6 @@ function mousePressed() {
   //   stiffness: 0.4
   // });
   // World.add(world, constraint);
-
-
-
 
   cannonballs.push(cannonball);
   // cannonballs.push(cannonball2);
@@ -145,6 +146,7 @@ function draw() {
   for (var k = 0; k < cannonballs.length; k++) {
     ellipse(cannonballs[k].position.x, cannonballs[k].position.y, 15);
   }
+
   //for adding bodies by click:
   // for (var l = 0; l < boxXs.length; l++) {
   //   rect(boxXs[l].position.x,boxXs[l].position.y, 50, 50);
@@ -201,27 +203,12 @@ function draw() {
 function mouseClicked() {
   //this now works as well! ahahaa!!!
   // Matter.Body.applyForce(box1, {x: box1.position.x, y: box1.position.y}, {x: 0.02, y: -0.05});
-
-
-
   // Matter.Body.applyForce(box1, {x: box1.position.x, y: box1.position.y}, {x: 0.01, y: -0.01});
 
-
-
-
-  //for add bodies to world on click:
-  // boxX = Bodies.rectangle(mouseX, mouseY, 50, 50, {isStatic: true});
-  // World.add(world, boxX);
-  // boxXs.push(boxX);
-
-
-  // this works:
-  // Matter.Body.translate(box1, {x:10, y:0});
-  //and so does this!!!:
-  // Matter.Body.setVelocity( box1, {x: 10, y: -10});
-  //this too:
-  // Matter.Body.setAngularVelocity( box1, Math.PI/6);
-
+    //for add bodies to world on click:
+    // boxX = Bodies.rectangle(mouseX, mouseY, 50, 50, {isStatic: true});
+    // World.add(world, boxX);
+    // boxXs.push(boxX);
 }
 
 // Working:
