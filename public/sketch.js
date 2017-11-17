@@ -42,11 +42,19 @@ var mConstraint;
 var boxes = [];
 var circles = [];
 var cannonballs = [];
+var grounds = [];
 var box1 = Bodies.rectangle(200, 100, 20, 20);
 var omega = Bodies.circle(500, 500, 100, {isStatic: true});
 var ground = Bodies.rectangle(100, 250, 250, 20, groundOpts);
 var ground2 = Bodies.rectangle(300, 150, 250, 20, {isStatic: true});
 var cannon = Bodies.rectangle(100, 400, 40, 15, {isStatic: true, restitution: 1});
+
+//attempt at moving bodies i.e. flyers:
+for (var k=0; k<10; k++) {
+  var ground3 = Bodies.rectangle(500, 50*k, 100, 20);
+  grounds.push(ground3);
+}
+
 
 //oooooooh you could do something dope like on deleting a body, make it just fall from the world!!
 function setup() {
@@ -68,6 +76,10 @@ function setup() {
   // world.gravity.y = -0.5;
   World.add(world, [box1, ground, ground2, cannon, omega]);
   Engine.run(engine);
+
+  for (var l=0; l<10; l++) {
+    World.add(world, grounds[l]);
+  }
 
   //investigage why elt isn't working:
   var canvasmouse = Mouse.create(canvas.elt);
@@ -153,6 +165,13 @@ function rotateG2() {
 }
 rotateG2();
 
+//flyers:
+for (var u=0; u<10; u++) {
+  // console.log(grounds[u]);
+  Matter.Body.setVelocity(grounds[u], {x: -10, y: 0});
+
+}
+
   background(251);
   if (keyIsDown(SHIFT)) {
     x -= 0.05;
@@ -166,6 +185,9 @@ rotateG2();
   for (var j = 0; j < circles.length; j++) {
     ellipse(circles[j].position.x, circles[j].position.y, circles[j].size);
   }
+  for (var o = 0; o < grounds.length; o++) {
+    rect(grounds[o].position.x, grounds[o].position.y, 100, 20);
+  }
   for (var k = 0; k < cannonballs.length; k++) {
     ellipse(cannonballs[k].position.x, cannonballs[k].position.y, 15);
   }
@@ -178,6 +200,8 @@ rotateG2();
 
 
   rect(box1.position.x,box1.position.y, 20, 20);
+  rect(ground3.position.x,ground3.position.y, 100, 20);
+
   ellipse(omega.position.x, omega.position.y, 200);
 
   //this is how we get around the angle rotation issue, jeez it sure is cumbersome:
