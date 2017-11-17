@@ -15,7 +15,9 @@
 //golf at the trump tower
 //could do a slingshot
 
-//what was my issue to .toFixed? why is the multiplying and dividing thing better?
+//what was my issue to .toFixed? why is the multiplying and dividing thing better? because it defaults to 6.00 rather than 6 i think
+
+//ooooh a Sensor is something that doesn't physically interact with other Bodies
 
 
 var x = 0;
@@ -44,17 +46,19 @@ var circles = [];
 var cannonballs = [];
 var grounds = [];
 var box1 = Bodies.rectangle(200, 100, 20, 20);
-//weirdly setting isSensor to true made it no longer palpable:
+//weirdly setting isSensor to true made it no longer palpable: nope this is what a sensor is:
 var omega = Bodies.circle(500, 500, 100, {isStatic: true});
+//why isn't this showing up?
+var button = Bodies.rectangle(500, 300, 20, 10, {isStatic: true});
 var ground = Bodies.rectangle(100, 250, 250, 20, groundOpts);
 var ground2 = Bodies.rectangle(300, 150, 250, 20, {isStatic: true});
 var cannon = Bodies.rectangle(100, 400, 40, 15, {isStatic: true, restitution: 1});
 
 //attempt at moving bodies i.e. flyers:
-for (var k=0; k<20; k++) {
-  var ground3 = Bodies.rectangle(1000, 50*k, 100, 20);
-  grounds.push(ground3);
-}
+// for (var k=0; k<20; k++) {
+//   var ground3 = Bodies.rectangle(1000, 50*k, 100, 20);
+//   grounds.push(ground3);
+// }
 
 
 //oooooooh you could do something dope like on deleting a body, make it just fall from the world!!
@@ -75,12 +79,13 @@ function setup() {
 //you could also probably cheat the engine into simulating gravitational pull by planets like this..?
 //is low gravity just like slow time?
   // world.gravity.y = -0.5;
-  World.add(world, [box1, ground, ground2, cannon, omega]);
+  World.add(world, [box1, ground, ground2, cannon, omega, button]);
   Engine.run(engine);
 
-  for (var l=0; l<grounds.length; l++) {
-    World.add(world, grounds[l]);
-  }
+//flyers:
+  // for (var l=0; l<grounds.length; l++) {
+  //   World.add(world, grounds[l]);
+  // }
 
   //investigage why elt isn't working:
   var canvasmouse = Mouse.create(canvas.elt);
@@ -102,14 +107,15 @@ function setup() {
 
         if (pair.bodyA === omega) {
           console.log('collision dog <3');
-        } else if (pair.bodyB === omega) {
-            console.log('whatup');
+          world.gravity.y = -world.gravity.y;
+
         }
+        // else if (pair.bodyB === omega) {
+        //     console.log('whatup');
+        //     world.gravity.y = -world.gravity.y;
+        // }
     }
 });
-
-
-
 
 
 
@@ -168,8 +174,9 @@ function mousePressed() {
   // cannonballs.push(cannonball2);
 } //end MOUSEPRESSED
 
-function draw() {
 
+
+function draw() {
   //ok..doesn't really work as far as drawing the line goes:
   if (mConstraint.body) {
     console.log(mConstraint);
@@ -189,11 +196,13 @@ function rotateG2() {
 rotateG2();
 
 //flyers:
-for (var u=0; u<grounds.length; u++) {
-  // console.log(grounds[u]);
-  Matter.Body.setVelocity(grounds[u], {x: -4, y: 0});
+// for (var u=0; u<grounds.length; u++) {
+//   // console.log(grounds[u]);
+//   Matter.Body.setVelocity(grounds[u], {x: -4, y: 0});
+//
+// }
 
-}
+rect(button.position.x, button.position.y, 20, 10);
 
   background(251);
   if (keyIsDown(SHIFT)) {
@@ -223,7 +232,7 @@ for (var u=0; u<grounds.length; u++) {
 
 
   rect(box1.position.x,box1.position.y, 20, 20);
-  rect(ground3.position.x,ground3.position.y, 100, 20);
+  // rect(ground3.position.x,ground3.position.y, 100, 20);
 
   ellipse(omega.position.x, omega.position.y, 200);
 
