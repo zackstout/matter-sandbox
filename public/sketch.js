@@ -50,6 +50,7 @@ var box1 = Bodies.rectangle(200, 100, 20, 20);
 var omega = Bodies.circle(500, 500, 100, {isStatic: true});
 //why isn't this showing up?
 var button = Bodies.rectangle(500, 300, 20, 10, {isStatic: true});
+var oscillator = Bodies.rectangle(900, 0, 80, 20);
 var ground = Bodies.rectangle(100, 250, 250, 20, groundOpts);
 var ground2 = Bodies.rectangle(300, 150, 250, 20, {isStatic: true});
 var cannon = Bodies.rectangle(100, 400, 40, 15, {isStatic: true, restitution: 1});
@@ -86,6 +87,7 @@ function setup() {
   // for (var l=0; l<grounds.length; l++) {
   //   World.add(world, grounds[l]);
   // }
+  World.add(world, oscillator);
 
   //investigage why elt isn't working:
   var canvasmouse = Mouse.create(canvas.elt);
@@ -105,11 +107,11 @@ function setup() {
     for (var i = 0, j = pairs.length; i != j; i++) {
         var pair = pairs[i];
 
-        if (pair.bodyA === omega) {
-          console.log('collision dog <3');
-          world.gravity.y = -world.gravity.y;
-
-        }
+        // if (pair.bodyA === omega) {
+        //   console.log('collision dog <3');
+        //   world.gravity.y = -world.gravity.y;
+        //
+        // }
         // else if (pair.bodyB === omega) {
         //     console.log('whatup');
         //     world.gravity.y = -world.gravity.y;
@@ -183,9 +185,9 @@ function draw() {
     var pos = mConstraint.body.position;
     var offset = mConstraint.constraint.pointA;
     var m = mConstraint.mouse.position;
-    stroke(0, 255, 0);
-    ellipse(pos.x, pos.y, 30, 30);
-    stroke(0,0,0);
+    // stroke(0, 255, 0);
+    // ellipse(pos.x, pos.y, 30, 30);
+    // stroke(0,0,0);
   }
 
 //SPINNER!
@@ -203,6 +205,8 @@ rotateG2();
 // }
 
 rect(button.position.x, button.position.y, 20, 10);
+rect(oscillator.position.x, oscillator.position.y, 80, 20);
+console.log(oscillator);
 
   background(251);
   if (keyIsDown(SHIFT)) {
