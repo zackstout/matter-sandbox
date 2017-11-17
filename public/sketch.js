@@ -44,14 +44,15 @@ var circles = [];
 var cannonballs = [];
 var grounds = [];
 var box1 = Bodies.rectangle(200, 100, 20, 20);
+//weirdly setting isSensor to true made it no longer palpable:
 var omega = Bodies.circle(500, 500, 100, {isStatic: true});
 var ground = Bodies.rectangle(100, 250, 250, 20, groundOpts);
 var ground2 = Bodies.rectangle(300, 150, 250, 20, {isStatic: true});
 var cannon = Bodies.rectangle(100, 400, 40, 15, {isStatic: true, restitution: 1});
 
 //attempt at moving bodies i.e. flyers:
-for (var k=0; k<10; k++) {
-  var ground3 = Bodies.rectangle(500, 50*k, 100, 20);
+for (var k=0; k<20; k++) {
+  var ground3 = Bodies.rectangle(1000, 50*k, 100, 20);
   grounds.push(ground3);
 }
 
@@ -77,7 +78,7 @@ function setup() {
   World.add(world, [box1, ground, ground2, cannon, omega]);
   Engine.run(engine);
 
-  for (var l=0; l<10; l++) {
+  for (var l=0; l<grounds.length; l++) {
     World.add(world, grounds[l]);
   }
 
@@ -89,6 +90,28 @@ function setup() {
   };
   mConstraint = MouseConstraint.create(engine, options2);
   World.add(world, mConstraint);
+
+
+
+
+  Matter.Events.on(engine, 'collisionStart', function(event) {
+    var pairs = event.pairs;
+
+    for (var i = 0, j = pairs.length; i != j; i++) {
+        var pair = pairs[i];
+
+        if (pair.bodyA === omega) {
+          console.log('collision dog <3');
+        } else if (pair.bodyB === omega) {
+            console.log('whatup');
+        }
+    }
+});
+
+
+
+
+
 
 
 } //end SETUP
@@ -166,9 +189,9 @@ function rotateG2() {
 rotateG2();
 
 //flyers:
-for (var u=0; u<10; u++) {
+for (var u=0; u<grounds.length; u++) {
   // console.log(grounds[u]);
-  Matter.Body.setVelocity(grounds[u], {x: -10, y: 0});
+  Matter.Body.setVelocity(grounds[u], {x: -4, y: 0});
 
 }
 
